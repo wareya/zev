@@ -1,0 +1,9 @@
+FF FFFF
+0000 0000    0000 0000 0000 0000
+ ||   ||           ||        | `zbuffer
+ ||   `+Fuck up HLE||        `Face normals lighting
+ ||    |if next is |`Frontface culling
+ ||    |set        `Backface culling
+ ||    `Vertex normal lighting
+ |`RGB lighting
+ `Darken shit if Vertex Normal Lighting is set
