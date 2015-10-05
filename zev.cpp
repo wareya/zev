@@ -603,7 +603,6 @@ int main(int argc, char ** argv)
                         break;
                     stack.push(index+8);
                     index=mem32(index+4)&0x00FFFFFF;
-                    printf("jumping to %08X from %08X\n", index, stack.top());
                     goto skippc;
                     break;
                 case 0xDF:
