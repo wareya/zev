@@ -286,8 +286,11 @@ int main(int argc, char ** argv)
     glClearColor(0.4f, 0.6f, 0.8f, 1.0f);
     glClearDepth(1.0f);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_POLYGON_OFFSET_FILL);
     glDepthFunc(GL_LEQUAL);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    
+    
     glEnable(GL_NORMALIZE);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
@@ -366,6 +369,29 @@ int main(int argc, char ** argv)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
         
+        // draw crosshair
+        
+        glDisable(GL_LIGHTING);
+        
+        
+        glPolygonOffset(-10000,-1);
+        glBegin(GL_QUADS);
+        
+        glColor3f(1,1,1);
+        
+        glVertex3f( 0.1/50, 1.0/50, -1);
+        glVertex3f(-0.1/50, 1.0/50, -1);
+        glVertex3f(-0.1/50,-1.0/50, -1);
+        glVertex3f( 0.1/50,-1.0/50, -1);
+        
+        glVertex3f( 1.0/50, 0.1/50, -1);
+        glVertex3f( 1.0/50,-0.1/50, -1);
+        glVertex3f(-1.0/50,-0.1/50, -1);
+        glVertex3f(-1.0/50, 0.1/50, -1);
+        
+        glEnd();
+        glEnable(GL_LIGHTING);
+        
         // handle modal state
         glRotatef(pitch, 1.0, 0, 0);
         glRotatef(yaw, 0, 1.0, 0);
@@ -382,43 +408,50 @@ int main(int argc, char ** argv)
         glLightfv(GL_LIGHT1, GL_POSITION, pos);
         
         //origin
-        
         glDisable(GL_LIGHTING);
+        
+        glPolygonOffset(-1,-1);
         glBegin(GL_QUADS);
-        
         glColor3f(1,0,0);
-        
-        glVertex3f(-9,-1, 0);
         glVertex3f(-9, 1, 0);
+        glVertex3f(-9,-1, 0);
         glVertex3f( 9,-1, 0);
         glVertex3f( 9, 1, 0);
-        glVertex3f(-9, 0,-1);
+        glVertex3f(-9, 0, 1);
         glVertex3f(-9, 0,-1);
         glVertex3f( 9, 0,-1);
-        glVertex3f( 9, 0,-1);
+        glVertex3f( 9, 0, 1);
+        glEnd();
         
+        glPolygonOffset(0,0);
+        glBegin(GL_QUADS);
         glColor3f(0,1,0);
-        glVertex3f( 0,-9,-1);
         glVertex3f( 0,-9, 1);
+        glVertex3f( 0,-9,-1);
         glVertex3f( 0, 9,-1);
         glVertex3f( 0, 9, 1);
-        glVertex3f(-1,-9, 0);
         glVertex3f( 1,-9, 0);
+        glVertex3f(-1,-9, 0);
         glVertex3f(-1, 9, 0);
         glVertex3f( 1, 9, 0);
+        glEnd();
         
+        glPolygonOffset(1,1);
+        glBegin(GL_QUADS);
         glColor3f(0,1,1);
         glVertex3f( 1, 0,-9);
         glVertex3f(-1, 0,-9);
-        glVertex3f( 1, 0, 9);
         glVertex3f(-1, 0, 9);
-        glVertex3f( 0,-1,-9);
+        glVertex3f( 1, 0, 9);
         glVertex3f( 0, 1,-9);
+        glVertex3f( 0,-1,-9);
         glVertex3f( 0,-1, 9);
         glVertex3f( 0, 1, 9);
-        
         glEnd();
+        
         glEnable(GL_LIGHTING);
+        
+        glPolygonOffset(0,0);
         
         
         for(auto list : opaque_dlists)
