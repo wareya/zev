@@ -275,18 +275,34 @@ int main(int argc, char ** argv)
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
     
-    window = SDL_CreateWindow("ZEV", 0, 0, 800, 600, SDL_WINDOW_OPENGL);
+    #define anywhere SDL_WINDOWPOS_UNDEFINED
+    
+    window = SDL_CreateWindow("ZEV", anywhere, anywhere, 800, 600, SDL_WINDOW_OPENGL);
     if(!window)
-    {   // try disabling AA if making a window fails
-        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
-        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
-        window = SDL_CreateWindow("ZEV", 0, 0, 800, 600, SDL_WINDOW_OPENGL);
+    {   // try successively lowering and then disabling AA if making a window fails
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+        window = SDL_CreateWindow("ZEV", anywhere, anywhere, 800, 600, SDL_WINDOW_OPENGL);
         if(!window)
         {   
-            printf("SDL_CreateWindow failed: %s",SDL_GetError());
-            return 0;
+            SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+            SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
+            window = SDL_CreateWindow("ZEV", anywhere, anywhere, 800, 600, SDL_WINDOW_OPENGL);
+            if(!window)
+            {   
+                SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+                SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+                window = SDL_CreateWindow("ZEV", anywhere, anywhere, 800, 600, SDL_WINDOW_OPENGL);
+                if(!window)
+                {   
+                    printf("SDL_CreateWindow failed: %s",SDL_GetError());
+                    return 0;
+                }
+            }
         }
     }
+    
+    #undef anywhere
     
     SDL_GL_CreateContext(window);
     
@@ -527,7 +543,7 @@ int main(int argc, char ** argv)
                 #define autoijk(index) \
                     verts[(index)].i, verts[(index)].j, verts[(index)].k
                 #define autorgb(index) \
-                    (uint8_t)(verts[(index)].i)/256.0, (uint8_t)(verts[(index)].j)/256.0, (uint8_t)(verts[(index)].k)/256.0
+                    (uint8_t)(verts[(index)].i), (uint8_t)(verts[(index)].j), (uint8_t)(verts[(index)].k)
                     
                     
                 case 0x05:
@@ -555,11 +571,11 @@ int main(int argc, char ** argv)
                         }
                         else
                         {
-                            glColor3f(autorgb(vert1));
+                            glColor4ub(autorgb(vert1), 255);
                             glVertex3f(autovertex(vert1));
-                            glColor3f(autorgb(vert2));
+                            glColor4ub(autorgb(vert2), 255);
                             glVertex3f(autovertex(vert2));
-                            glColor3f(autorgb(vert3));
+                            glColor4ub(autorgb(vert3), 255);
                             glVertex3f(autovertex(vert3));
                         }
                         
@@ -601,17 +617,17 @@ int main(int argc, char ** argv)
                         }
                         else
                         {
-                            glColor3f(autorgb(vert1));
+                            glColor4ub(autorgb(vert1), 255);
                             glVertex3f(autovertex(vert1));
-                            glColor3f(autorgb(vert2));
+                            glColor4ub(autorgb(vert2), 255);
                             glVertex3f(autovertex(vert2));
-                            glColor3f(autorgb(vert3));
+                            glColor4ub(autorgb(vert3), 255);
                             glVertex3f(autovertex(vert3));
-                            glColor3f(autorgb(vert4));
+                            glColor4ub(autorgb(vert4), 255);
                             glVertex3f(autovertex(vert4));
-                            glColor3f(autorgb(vert5));
+                            glColor4ub(autorgb(vert5), 255);
                             glVertex3f(autovertex(vert5));
-                            glColor3f(autorgb(vert6));
+                            glColor4ub(autorgb(vert6), 255);
                             glVertex3f(autovertex(vert6));
                         }
                         glEnd();
