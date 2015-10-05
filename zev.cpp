@@ -542,6 +542,10 @@ int main(int argc, char ** argv)
                     verts[(index)].x, verts[(index)].y, verts[(index)].z
                 #define autoijk(index) \
                     verts[(index)].i, verts[(index)].j, verts[(index)].k
+                #define autovvv(index) \
+                      verts[(index)].x+verts[(index)].i*0.1\
+                    , verts[(index)].y+verts[(index)].j*0.1\
+                    , verts[(index)].z+verts[(index)].k*0.1
                 #define autorgb(index) \
                     (uint8_t)(verts[(index)].i), (uint8_t)(verts[(index)].j), (uint8_t)(verts[(index)].k)
                     
@@ -578,9 +582,24 @@ int main(int argc, char ** argv)
                             glColor4ub(autorgb(vert3), 255);
                             glVertex3f(autovertex(vert3));
                         }
-                        
-                        
                         glEnd();
+                        
+                        if(normalize)
+                        {
+                            glDisable(GL_LIGHTING);
+                            glLineWidth(1.2);
+                            glColor3f(1.0, 0.0, 0.0);
+                            
+                            glBegin(GL_LINES);
+                            glVertex3f(autovertex(vert1));
+                            glVertex3f(autovvv(vert1));
+                            glVertex3f(autovertex(vert2));
+                            glVertex3f(autovvv(vert2));
+                            glVertex3f(autovertex(vert3));
+                            glVertex3f(autovvv(vert3));
+                            glEnd();
+                            glEnable(GL_LIGHTING);
+                        }
                     }
                     break;
                     
@@ -631,6 +650,28 @@ int main(int argc, char ** argv)
                             glVertex3f(autovertex(vert6));
                         }
                         glEnd();
+                        if(normalize)
+                        {
+                            glDisable(GL_LIGHTING);
+                            glLineWidth(1.2);
+                            glColor3f(1.0, 0.0, 0.0);
+                            
+                            glBegin(GL_LINES);
+                            glVertex3f(autovertex(vert1));
+                            glVertex3f(autovvv(vert1));
+                            glVertex3f(autovertex(vert2));
+                            glVertex3f(autovvv(vert2));
+                            glVertex3f(autovertex(vert3));
+                            glVertex3f(autovvv(vert3));
+                            glVertex3f(autovertex(vert4));
+                            glVertex3f(autovvv(vert4));
+                            glVertex3f(autovertex(vert5));
+                            glVertex3f(autovvv(vert5));
+                            glVertex3f(autovertex(vert6));
+                            glVertex3f(autovvv(vert6));
+                            glEnd();
+                            glEnable(GL_LIGHTING);
+                        }
                     }
                     break;
                 case 0x07:
