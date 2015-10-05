@@ -278,7 +278,7 @@ int main(int argc, char ** argv)
     window = SDL_CreateWindow("ZEV", 0, 0, 800, 600, SDL_WINDOW_OPENGL);
     if(!window)
     {
-        printf("SDL_Init failed: %s",SDL_GetError());
+        printf("SDL_CreateWindow failed: %s",SDL_GetError());
         return 0;
     }
     
