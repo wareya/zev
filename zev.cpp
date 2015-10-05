@@ -636,6 +636,7 @@ int main(int argc, char ** argv)
     quit:
     
     SDL_Quit();
+    return 0;
 }
 
 
