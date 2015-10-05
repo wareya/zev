@@ -264,16 +264,25 @@ int main(int argc, char ** argv)
         
     }
     
-    SDL_Init(SDL_INIT_VIDEO);
+    if(SDL_Init(SDL_INIT_VIDEO))
+    {
+        printf("SDL_Init failed: %s",SDL_GetError());
+        return 0;
+    }
+
     SDL_Window* window;
-    SDL_Renderer* renderer;
-    SDL_RendererInfo info;
     
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
     
-    SDL_CreateWindowAndRenderer(800, 600, SDL_WINDOW_OPENGL, &window, &renderer);
-    SDL_GetRendererInfo(renderer, &info);
+    window = SDL_CreateWindow("ZEV", 0, 0, 800, 600, SDL_WINDOW_OPENGL);
+    if(!window)
+    {
+        printf("SDL_Init failed: %s",SDL_GetError());
+        return 0;
+    }
+    
+    SDL_GL_CreateContext(window);
     
     glViewport(0, 0, 800, 600);
     glMatrixMode(GL_PROJECTION);
@@ -423,7 +432,7 @@ int main(int argc, char ** argv)
         glVertex3f( 9, 0, 1);
         glEnd();
         
-        glPolygonOffset(0,0);
+        glPolygonOffset(-0.9,-0.9);
         glBegin(GL_QUADS);
         glColor3f(0,1,0);
         glVertex3f( 0,-9, 1);
@@ -436,7 +445,7 @@ int main(int argc, char ** argv)
         glVertex3f( 1, 9, 0);
         glEnd();
         
-        glPolygonOffset(1,1);
+        glPolygonOffset(-0.8,-0.8);
         glBegin(GL_QUADS);
         glColor3f(0,1,1);
         glVertex3f( 1, 0,-9);
