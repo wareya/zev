@@ -277,9 +277,15 @@ int main(int argc, char ** argv)
     
     window = SDL_CreateWindow("ZEV", 0, 0, 800, 600, SDL_WINDOW_OPENGL);
     if(!window)
-    {
-        printf("SDL_CreateWindow failed: %s",SDL_GetError());
-        return 0;
+    {   // try disabline AA if making a window fails
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+        window = SDL_CreateWindow("ZEV", 0, 0, 800, 600, SDL_WINDOW_OPENGL);
+        if(!window)
+        {   
+            printf("SDL_CreateWindow failed: %s",SDL_GetError());
+            return 0;
+        }
     }
     
     SDL_GL_CreateContext(window);
