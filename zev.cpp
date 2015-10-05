@@ -26,7 +26,7 @@ THIS SOFTWARE.
 #include "endian.h"
 
 #include <SDL2/SDL.h>
-#undef SDL_main
+#undef main
 #include <SDL2/SDL_opengl.h>
 #include <GL/glu.h>
 
@@ -599,8 +599,11 @@ int main(int argc, char ** argv)
                     break;
                 case 0xDE:
                     //puts("subdl");
+                    if(mem8(index+4) != 0x03)
+                        break;
                     stack.push(index+8);
                     index=mem32(index+4)&0x00FFFFFF;
+                    printf("jumping to %08X from %08X\n", index, stack.top());
                     goto skippc;
                     break;
                 case 0xDF:
